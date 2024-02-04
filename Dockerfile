@@ -8,13 +8,8 @@ FROM httpd:2.4
 #    paquete3
 
 # Configura el entorno de trabajo
-WORKDIR /app
+#WORKDIR /app
 
-RUN sed -i \
-		-e 's/^#\(Include .*httpd-ssl.conf\)/\1/' \
-		-e 's/^#\(LoadModule .*mod_ssl.so\)/\1/' \
-		-e 's/^#\(LoadModule .*mod_socache_shmcb.so\)/\1/' \
-		conf/httpd.conf
         
 # Exponer el puerto 80 para que el servidor web esté accesible
 EXPOSE 80
