@@ -1,17 +1,8 @@
-# Usa una imagen base de Node.js
-FROM node:alpine
+# Usa la imagen oficial de Apache
+FROM httpd:latest
 
-# Establece el directorio de trabajo en /app
-WORKDIR /app
+# Copia tu sitio web estático al directorio de documentos de Apache en el contenedor
+#COPY ./mi_sitio_web /usr/local/apache2/htdocs/
 
-# Copia los archivos de la aplicación al directorio de trabajo en el contenedor
-COPY . /app
-
-# Instala las dependencias de la aplicación
-RUN npm install
-
-# Expone el puerto 3000
-EXPOSE 3000
-
-# Especifica el comando para iniciar la aplicación cuando se inicie el contenedor
-CMD ["node", "app.js"]
+# Exponer el puerto 80 para que el servidor Apache pueda ser accesible desde el exterior
+EXPOSE 80
