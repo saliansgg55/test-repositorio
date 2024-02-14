@@ -5,7 +5,7 @@ FROM node:21-alpine3.18
 WORKDIR /app
 
 # Copia los archivos de la aplicación al directorio de trabajo en el contenedor
-COPY . .
+COPY . /app
 
 # Instala las dependencias de la aplicación
 RUN npm install

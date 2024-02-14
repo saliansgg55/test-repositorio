@@ -23,11 +23,17 @@ pipeline {
             else
                 echo "Hacendo git clone del repositorio"
                 git clone https://github.com/saliansgg55/test-repositorio.git
-                cd test-repositorio
-                pwd
-                ls -ltr 
+                
           fi
      
+            cd test-repositorio
+            pwd            
+            chmod 777 Dockerfile
+            ls -ltr 
+
+            docker build -t node:21-alpine3.18 .
+            docker images
+            
              '''  
         }
     }
