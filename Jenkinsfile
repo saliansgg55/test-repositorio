@@ -6,8 +6,12 @@ pipeline {
   }
 
   environment {
-    ARTIFACT_ID = "elbuo8/webapp:${env.BUILD_NUMBER}"
+    DOCKER_HUB_LOGIN = credentials('docker')
+    REGISTRY = "salinasgg"
+    REPOSITORY = "node"
+    //ARTIFACT_ID = "elbuo8/webapp:${env.BUILD_NUMBER}"
     ARCHIVO = "build-node"
+    
   }
    stages {
    stage('Building image') {
@@ -31,7 +35,7 @@ pipeline {
             chmod 777 Dockerfile
             ls -ltr 
 
-            docker build -t node:21-alpine3.18 .
+            docker build -t $REGISTRY/$REPOSITORY:21-alpine3.18 .
             docker images
             
              '''  
@@ -42,15 +46,23 @@ pipeline {
     stage('Run tests') {
       steps {
        // sh "docker run testapp npm test"
-        sh 'echo "Etapa de testeo" '
+        sh '''
+            echo "testeando imagen"
+            cd /var/jenkins_home/workspace/test-repositorio
+            docker images
+        '''
       }
     }
    stage('Deploy Image') {
       steps{
         sh '''
           echo "Deploy de la imagen a Docker hub"
-        #docker tag testapp 127.0.0.1:5000/mguazzardo/testapp
-        #docker push 127.0.0.1:5000/mguazzardo/testapp   
+          docker login --username=$DOCKER_HUB_LOGIN_USR --password=$DOCKER_HUB_LOGIN_PSW
+          #docker tag node:21-alpine3.18 $REGISTRY/node:21-alpine3.18
+          docker push $REGISTRY/$REPOSITORY:21-alpine3.18        
+          
+          cd ..
+          rm -rf test-repositorio
         '''
         }
       }
